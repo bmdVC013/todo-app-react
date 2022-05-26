@@ -1,17 +1,20 @@
 import React from "react";
 
 const TodoItem = ({ todo, todos, setTodos }) => {
-  const onCheck = (id) => {
-    const index = todos.findIndex((todo) => todo.id === id);
-    console.log(index);
+  const onComplete = () => {
+    const index = todos.findIndex((item) => item.id === todo.id);
 
     if (index > -1) {
-      // setTodos([...todos]);
+      setTodos((currentTodos) => [
+        ...currentTodos.slice(0, index),
+        { ...currentTodos[index], is_completed: true },
+        ...currentTodos.slice(index + 1),
+      ]);
     }
   };
 
-  const onDelete = (id) => {
-    console.log("Delete");
+  const onDelete = () => {
+    setTodos(todos.filter((el) => el.id !== todo.id));
   };
 
   return (
@@ -19,10 +22,10 @@ const TodoItem = ({ todo, todos, setTodos }) => {
       <li className={`todo-item ${todo.is_completed ? "completed" : ""}`}>
         {todo.content}
       </li>
-      <button onClick={onCheck(todo.id)} className="complete-btn">
+      <button onClick={onComplete} className="complete-btn">
         <i className="fas fa-check"></i>
       </button>
-      <button onClick={onDelete(todo.id)} className="trash-btn">
+      <button onClick={onDelete} className="trash-btn">
         <i className="fas fa-trash"></i>
       </button>
     </div>
